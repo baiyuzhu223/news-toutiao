@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     // 校验手机号的函数
@@ -40,8 +41,8 @@ export default {
 
     return {
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       loginRules: {
         mobile: [
@@ -62,6 +63,7 @@ export default {
         if (valid) {
           this.$http.post('authorizations', this.loginForm).then(res => {
             // 成功
+            local.setUser(res.data.data)
             this.$router.push('/')
           }).catch(() => {
             // 失败提示
