@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 // @是webpack指定的路径别名 @==‘/src’ 绝对路劲
 import router from '@/router'
 import axios from '@/api'
+import plugin from '@/components'
+Vue.use(plugin)
 Vue.prototype.$http = axios
 Vue.use(ElementUI)
 

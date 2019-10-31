@@ -5,7 +5,7 @@
       <div class="logo" :class="{smallLogo:!isOpen}"></div>
       <!-- 导航菜单 -->
       <el-menu
-        default-active="/"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -51,7 +51,7 @@
         <!-- 文字 -->
         <span class="text">江苏传智播客科技教育有限公司</span>
         <!-- 下拉菜单组件 -->
-        <el-dropdown class="dropdown">
+        <el-dropdown class="dropdown" @command="handleClick">
           <span class="el-dropdown-link">
             <img class="headIcon" :src="userInfo.photo" alt />
             <span class="userName">{{userInfo.name}}</span>
@@ -100,6 +100,10 @@ export default {
     logout () {
       local.delUser()
       this.$router.push('/login')
+    },
+    handleClick (command) {
+      // command 值 setting logout
+      this[command]()
     }
   }
 }

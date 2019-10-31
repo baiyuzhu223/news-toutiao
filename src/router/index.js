@@ -6,6 +6,7 @@ import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import local from '@/utils/local'
+import Article from '@/views/article'
 
 Vue.use(VueRooter)
 
@@ -17,7 +18,10 @@ const router = new VueRooter({
     { path: '/',
       component: Home,
       children: [
-        { path: '/', component: Welcome }
+        // 欢迎
+        { path: '/', component: Welcome },
+        // 内容
+        { path: '/article', component: Article }
       ] },
     { path: '*', component: NotFound }
   ]
