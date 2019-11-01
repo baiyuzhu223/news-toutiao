@@ -18,7 +18,7 @@
 
   </el-form-item>
     <el-form-item label="频道">
-       <el-select v-model="reqParams.channel_id" placeholder="请选择">
+       <el-select v-model="reqParams.channel_id" placeholder="请选择" clearable>
     <el-option
       v-for="item in channelOptions"
       :key="item.id"
@@ -34,11 +34,12 @@
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-
+              @change="changeDate"
+              value-format="yyyy-MM-dd"
           ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">筛选</el-button>
+        <el-button type="primary" @click="search">筛选</el-button>
         </el-form-item>
 </el-form>
     </el-card>
@@ -71,9 +72,9 @@
     </el-table-column>
     <el-table-column prop="pubdate" label="发布时间"></el-table-column>
     <el-table-column width="120px" label="操作">
-      <template>
-        <el-button type="primary" icon="el-icon-edit" plain circle></el-button>
-         <el-button type="danger" icon="el-icon-delete" plain circle></el-button>
+      <template slot-scope="scope">
+        <el-button type="primary" icon="el-icon-edit" plain circle @click="toEdit(scope.row.id)"></el-button>
+         <el-button type="danger" icon="el-icon-delete" plain circle @click="del(scope.row.id)"></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -146,9 +147,46 @@ export default {
       // 赋值文章总条数依赖数据
       this.total = data.total_count
     },
+    // 分页效果
     pager (newPage) {
       // 根据新的页码和当前的筛选条件 重新查询数据即可
       this.reqParams.page = newPage
+      this.getArticles()
+    },
+    // 筛选
+    search () {
+      // 准备日期数据
+      // 进行数据获取
+      // 如果频道的值 ''时候 修改为null
+      if (this.reqParams.channel_id === '') this.reqParams.channel_id = null
+      // 回到第一页
+      this.reqParams.page = 1
+      this.getArticles()
+    },
+    // 选择日期触发的事件函数
+    changeDate (dateArr) {
+      // dateArr的数据格式:[date,date]
+      // 后端需要的是字符串  dateArr的数据格式[string,string]
+      // 注意 清除选择的日期后 dateArr的值 null
+      if (dateArr) {
+        this.reqParams.begin_pubdate = dateArr[0]
+        this.reqParams.end_pubdate = dateArr[1]
+      } else {
+        this.reqParams.begin_pubdate = null
+        this.reqParams.end_pubdate = null
+      }
+    },
+    // 编辑
+    toEdit (id) {
+      this.$router.push({ path: '/publish', query: { id } })
+    },
+    // 删除
+    async del (id) {
+      // 请求
+      await this.$http.delete(`articles/${id}`)
+      // 提示
+      this.$message.success('删除文章成功')
+      // 更新列表
       this.getArticles()
     }
 

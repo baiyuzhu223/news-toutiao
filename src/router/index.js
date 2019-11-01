@@ -7,7 +7,7 @@ import Welcome from '@/views/welcome'
 import NotFound from '@/views/404'
 import local from '@/utils/local'
 import Article from '@/views/article'
-
+import Image from '@/views/image'
 Vue.use(VueRooter)
 
 const router = new VueRooter({
@@ -21,7 +21,8 @@ const router = new VueRooter({
         // 欢迎
         { path: '/', component: Welcome },
         // 内容
-        { path: '/article', component: Article }
+        { path: '/article', component: Article },
+        { path: '/image', component: Image }
       ] },
     { path: '*', component: NotFound }
   ]
